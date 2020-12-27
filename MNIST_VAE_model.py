@@ -35,7 +35,7 @@ class MLP(nn.Module):
 
     def sample(self, mean, log_variance):
         var=torch.exp(-0.5*log_variance)
-        eta=torch.rand(var.size(), device=var.device)
+        eta=torch.randn(var.size(), device=var.device)
         return mean+var*eta
 
     def forward(self, x):
