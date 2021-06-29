@@ -30,11 +30,11 @@ class MLP(nn.Module):
     def decode(self, x):
         x=F.relu(self.fc4(x))
         x=F.relu(self.fc5(x))
-        x=F.sigmoid(self.fc6(x))
+        x=torch.sigmoid(self.fc6(x))
         return x
 
     def sample(self, mean, log_variance):
-        var=torch.exp(-0.5*log_variance)
+        var=torch.exp(0.5*log_variance)
         eta=torch.randn(var.size(), device=var.device)
         return mean+var*eta
 

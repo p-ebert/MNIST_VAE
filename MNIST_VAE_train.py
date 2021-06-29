@@ -32,14 +32,14 @@ torch.save(vae.state_dict(), "{}/Trainedmodels/Model_0.pth".format(project_dir_l
 if use_cuda:
     vae.cuda()
 
-optimiser=torch.optim.Adam(vae.parameters())
+optimiser=torch.optim.Adam(vae.parameters(), lr=0.0001)
 
 #Definition of the loss of the VAE
 def VAE_loss(x, x_gen, mean, log_variance):
     #recon_loss=-torch.sum(x*torch.log(x_gen))
     recon_loss=F.binary_cross_entropy(x_gen, x, reduction="sum")
     #recon_loss=F.mse_loss(x_gen, x)
-    KLD_loss=-0.5*torch.sum(1+log_variance-mean.pow(2)-log_variance.exp())
+    KLD_loss=-0.5*torch.sum(1+2*log_variance-mean.pow(2)-(2*log_variance).exp())
     return recon_loss+KLD_loss
 
 for epoch in range(1,epochs+1):
